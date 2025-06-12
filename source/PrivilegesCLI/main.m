@@ -327,8 +327,9 @@
     fprintf(stderr, "                            interactively prompt for a reason.\n\n");
     fprintf(stderr, "  -r, --remove              Removes the current user from the admin group.\n\n");
     fprintf(stderr, "  -s, --status              Displays the current user's privileges.\n\n");
-    fprintf(stderr, "  -p                        When used with --status, returns only the privilege status of the user.  This option is useful for setting shell variables.\n\n");
-    fprintf(stderr, "  -e                        Separate the username and their privileges status with ‘=’.  This is useful for producing output which can be fed to other commands.  This option is useful for shell scripting.\n\n");
+    fprintf(stderr, "  -p                        When used with --status, returns only the privilege status of the user.\n");
+    fprintf(stderr, "                            This option is useful for setting shell variables.\n\n");
+    fprintf(stderr, "  -e                        Separate the username and their privileges status with ‘=’\n\n");
     fprintf(stderr, "  -v, --version             Displays version information.\n\n");
 
     _shouldTerminate = YES;
