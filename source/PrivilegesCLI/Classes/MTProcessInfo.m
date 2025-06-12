@@ -25,6 +25,20 @@
     return show;
 }
 
+// Returns only status of user. This option is useful for setting shell variables
+- (BOOL)parseableOutput
+{
+    BOOL show = [[self arguments] containsObject:@"-p"];
+    return show;
+}
+
+// Separate the user name and the status of the user with ‘='.
+- (BOOL)equateOutput
+{
+    BOOL show = [[self arguments] containsObject:@"-e"];
+    return show;
+}
+
 - (BOOL)requestPrivileges
 {
     BOOL request = [[self arguments] containsObject:@"-a"] || [[self arguments] containsObject:@"--add"];
