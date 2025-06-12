@@ -314,7 +314,7 @@
 
 - (void)writeConsole:(NSString*)consoleMessage
 {
-    fprintf(stderr, "%s\n", [consoleMessage UTF8String]);
+    fprintf(stdout, "%s\n", [consoleMessage UTF8String]);
 }
 
 - (void) printUsage
