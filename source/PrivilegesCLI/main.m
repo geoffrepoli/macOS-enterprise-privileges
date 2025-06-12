@@ -36,38 +36,45 @@
         MTProcessInfo *appArguments = [[MTProcessInfo alloc] init];
         MTPrivileges *privilegesApp = [[MTPrivileges alloc] init];
         BOOL hasAdminPrivileges = [[privilegesApp currentUser] hasAdminPrivileges];
+        NSString *userName = [[privilegesApp currentUser] userName];
 
         if ([appArguments showStatus]) {
         
-            if (hasAdminPrivileges) {
+            NSString *privilegeStatus = hasAdminPrivileges ? @"admin" : @"standard";
+
+            if ([appArguments parseableOutput]) {
+            
+                    [self writeConsole:privilegeStatus];
                 
-                [self writeConsole:[NSString stringWithFormat:@"User %@ has administrator privileges", [[privilegesApp currentUser] userName]]];
+            } else if ([appArguments equateOutput]) {
+            
+                [self writeConsole:[NSString stringWithFormat:@"%@=%@", userName, privilegeStatus]];
+
+            } else {
+
+                [self writeConsole:[NSString stringWithFormat:@"User %@ has %@ privileges", userName, privilegeStatus]];
                 
                 if ([privilegesApp expirationInterval] > 0) {
-                    
+
                     dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
-                    
+
                     [[privilegesApp currentUser] privilegesExpirationWithReply:^(NSDate *expire, NSUInteger remaining) {
-                        
+
                         if (remaining > 0) {
-                            
+
                             [self writeConsole:[NSString stringWithFormat:@"Administrator privileges expire in %@", [MTPrivileges stringForDuration:remaining
                                                                                                                                           localized:NO
                                                                                                                                        naturalScale:NO
                                                                                                                     ]
-                                               ]
+                                                ]
                             ];
                         }
-                        
+
                         dispatch_semaphore_signal(semaphore);
                     }];
-                    
+
                     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
-                }
-                
-            } else {
-                
-                [self writeConsole:[NSString stringWithFormat:@"User %@ has standard user privileges", [[privilegesApp currentUser] userName]]];
+
             }
             
         } else if ([appArguments showVersion]) {
@@ -320,6 +327,8 @@
     fprintf(stderr, "                            interactively prompt for a reason.\n\n");
     fprintf(stderr, "  -r, --remove              Removes the current user from the admin group.\n\n");
     fprintf(stderr, "  -s, --status              Displays the current user's privileges.\n\n");
+    fprintf(stderr, "  -p                        When used with --status, returns only the privilege status of the user.  This option is useful for setting shell variables.\n\n");
+    fprintf(stderr, "  -e                        Separate the username and their privileges status with ‘=’.  This is useful for producing output which can be fed to other commands.  This option is ignored if -p is specified.\n\n");
     fprintf(stderr, "  -v, --version             Displays version information.\n\n");
     
     _shouldTerminate = YES;
