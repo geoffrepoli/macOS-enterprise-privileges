@@ -32,6 +32,20 @@
 - (BOOL)showStatus;
 
 /*!
+ @method        parseableOutput
+ @abstract      Get whether the status should be displayed as parseable output.
+ @discussion    Returns YES if status should be parseable, otherwise returns NO.
+ */
+- (BOOL)parseableOutput;
+
+/*!
+ @method        equateOutput
+ @abstract      Get whether the status should be displayed as equatable output.
+ @discussion    Returns YES if status should be equatable, otherwise returns NO.
+ */
+- (BOOL)equateOutput;
+
+/*!
  @method        showVersion
  @abstract      Get whether the version should be displayed.
  @discussion    Returns YES if the version should be displayed, otherwise returns NO.
